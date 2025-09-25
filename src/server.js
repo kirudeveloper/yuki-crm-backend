@@ -39,6 +39,7 @@ const initializeDatabase = async () => {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+console.log('🚀 FORCE REDEPLOY - Environment check:', process.env.NODE_ENV);
 
 // Middleware
 app.use(helmet()); // Security middleware
