@@ -4,7 +4,8 @@ const CustomerSupabase = require('./CustomerSupabase');
 
 class DatabaseFactory {
   static getCustomerModel() {
-    const dbType = process.env.DB_TYPE || 'sqlite';
+    // Temporary fix for Railway environment variable issue
+    const dbType = process.env.DB_TYPE || 'supabase';
     
     console.log(`🔍 DatabaseFactory: DB_TYPE = "${dbType}"`);
     console.log(`🔍 All environment variables:`, Object.keys(process.env).filter(key => key.includes('DB') || key.includes('SUPABASE')));
