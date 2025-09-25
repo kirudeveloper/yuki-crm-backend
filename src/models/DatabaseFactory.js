@@ -7,6 +7,7 @@ class DatabaseFactory {
     const dbType = process.env.DB_TYPE || 'sqlite';
     
     console.log(`🔍 DatabaseFactory: DB_TYPE = "${dbType}"`);
+    console.log(`🔍 All environment variables:`, Object.keys(process.env).filter(key => key.includes('DB') || key.includes('SUPABASE')));
     
     switch (dbType.toLowerCase()) {
       case 'postgresql':
