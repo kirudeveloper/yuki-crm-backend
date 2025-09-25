@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 // Import route modules
+const authRoutes = require('./auth');
 const customerRoutes = require('./customers');
 const taskRoutes = require('./taskRoutes');
 const opportunityRoutes = require('./opportunities');
@@ -9,6 +10,7 @@ const workOrderRoutes = require('./workorders');
 // const companyRoutes = require('./companyRoutes'); // TODO: Create company routes
 
 // Mount routes
+router.use('/auth', authRoutes);
 router.use('/customers', customerRoutes);
 router.use('/tasks', taskRoutes);
 router.use('/opportunities', opportunityRoutes);
@@ -33,6 +35,7 @@ router.get('/', (req, res) => {
     version: '1.0.0',
     endpoints: {
       health: '/api/health',
+      auth: '/api/auth',
       customers: '/api/customers',
       tasks: '/api/tasks',
       opportunities: '/api/opportunities',

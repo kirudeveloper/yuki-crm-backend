@@ -3,7 +3,20 @@ const { supabase } = require('../config/supabase');
 class CompanySupabase {
   static async create(companyData) {
     try {
-      const { companyName, firstName, lastName, email, phoneNumber } = companyData;
+      const { 
+        companyName, 
+        firstName, 
+        lastName, 
+        email, 
+        phoneNumber,
+        address,
+        city,
+        zipCode,
+        country,
+        website,
+        industry,
+        companySize
+      } = companyData;
       
       const { data, error } = await supabase
         .from('companies')
@@ -13,7 +26,14 @@ class CompanySupabase {
             first_name: firstName,
             last_name: lastName,
             email,
-            phone_number: phoneNumber
+            phone_number: phoneNumber,
+            address: address || null,
+            city: city || null,
+            zip_code: zipCode || null,
+            country: country || 'USA',
+            website: website || null,
+            industry: industry || null,
+            company_size: companySize || null
           }
         ])
         .select()
