@@ -31,8 +31,7 @@ class TaskController {
       const taskData = {
         ...req.body,
         companyId: companyId, // Set from authenticated user
-        userId: userId, // Set from authenticated user
-        ownerId: req.body.ownerId || userId // Use provided owner or default to current user
+        userId: userId // Set from authenticated user
       };
 
       const task = await Task.create(taskData);

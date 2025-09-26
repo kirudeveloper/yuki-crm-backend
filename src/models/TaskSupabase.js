@@ -30,8 +30,7 @@ class TaskSupabase {
         description,
         status = 'pending',
         priority = 'medium',
-        dueDate,
-        ownerId
+        dueDate
       } = taskData;
 
       const { data, error } = await supabase
@@ -45,8 +44,7 @@ class TaskSupabase {
             description,
             status,
             priority,
-            due_date: dueDate,
-            owner_id: ownerId
+            due_date: dueDate
           }
         ])
         .select()
