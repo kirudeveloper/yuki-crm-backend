@@ -55,13 +55,32 @@ class WorkOrderController {
   // Create new work order
   static async createWorkOrder(req, res) {
     try {
-      const workOrderData = req.body;
-      console.log('🔧 Creating new work order:', workOrderData);
-      
-      // Set default company_id if not provided
-      if (!workOrderData.company_id) {
-        workOrderData.company_id = 'CMP000000000001';
+      // Get company_id and user_id from authenticated user
+      const companyId = req.user?.company_id;
+      const userId = req.user?.id;
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Company ID not found in authentication token'
+        });
       }
+
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          message: 'User ID not found in authentication token'
+        });
+      }
+
+      console.log('🔧 Creating work order for company:', companyId, 'by user:', userId);
+
+      const workOrderData = {
+        ...req.body,
+        company_id: companyId, // Set from authenticated user
+        user_id: userId, // Set from authenticated user
+        created_by: userId // Track who created the work order
+      };
       
       const workOrder = await WorkOrderSupabase.create(workOrderData);
       

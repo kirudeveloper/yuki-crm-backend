@@ -3,9 +3,32 @@ const Task = require('../models/Task');
 class TaskController {
   static async createTask(req, res) {
     try {
+      // Get company_id and user_id from authenticated user
+      const companyId = req.user?.company_id;
+      const userId = req.user?.id;
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Company ID not found in authentication token'
+        });
+      }
+
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          message: 'User ID not found in authentication token'
+        });
+      }
+
+      console.log('🔍 Creating task for company:', companyId, 'by user:', userId);
+
       const taskData = {
         ...req.body,
-        companyId: req.body.companyId || null
+        companyId: companyId, // Set from authenticated user
+        userId: userId, // Set from authenticated user
+        createdBy: userId, // Track who created the task
+        ownerId: req.body.ownerId || userId // Use provided owner or default to current user
       };
 
       const task = await Task.create(taskData);

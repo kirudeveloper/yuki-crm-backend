@@ -28,6 +28,8 @@ class CustomerSupabase {
     try {
       const {
         company_id,
+        user_id,
+        created_by,
         firstName,
         lastName,
         dateOfBirth,
@@ -46,6 +48,8 @@ class CustomerSupabase {
         .insert([
           {
             company_id,
+            user_id,
+            created_by,
             first_name: firstName,
             last_name: lastName,
             date_of_birth: dateOfBirth,

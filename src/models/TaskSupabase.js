@@ -25,11 +25,14 @@ class TaskSupabase {
       const {
         customerId,
         companyId,
+        userId,
+        createdBy,
         title,
         description,
         status = 'pending',
         priority = 'medium',
-        dueDate
+        dueDate,
+        ownerId
       } = taskData;
 
       const { data, error } = await supabase
@@ -38,11 +41,14 @@ class TaskSupabase {
           {
             customer_id: customerId,
             company_id: companyId,
+            user_id: userId,
+            created_by: createdBy,
             title,
             description,
             status,
             priority,
-            due_date: dueDate
+            due_date: dueDate,
+            owner_id: ownerId
           }
         ])
         .select()

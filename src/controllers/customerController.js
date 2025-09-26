@@ -20,8 +20,30 @@ class CustomerController {
         });
       }
 
+      // Get company_id and user_id from authenticated user
+      const companyId = req.user?.company_id;
+      const userId = req.user?.id;
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Company ID not found in authentication token'
+        });
+      }
+
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          message: 'User ID not found in authentication token'
+        });
+      }
+
+      console.log('🔍 Creating customer for company:', companyId, 'by user:', userId);
+
       const customerData = {
-        company_id: req.body.company_id,
+        company_id: companyId, // Set from authenticated user
+        user_id: userId, // Set from authenticated user
+        created_by: userId, // Track who created the customer
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         dateOfBirth: req.body.dateOfBirth,

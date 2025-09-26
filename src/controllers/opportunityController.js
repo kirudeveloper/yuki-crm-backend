@@ -55,13 +55,32 @@ class OpportunityController {
   // Create new opportunity
   static async createOpportunity(req, res) {
     try {
-      const opportunityData = req.body;
-      console.log('📊 Creating new opportunity:', opportunityData);
-      
-      // Set default company_id if not provided
-      if (!opportunityData.company_id) {
-        opportunityData.company_id = 'CMP000000000001';
+      // Get company_id and user_id from authenticated user
+      const companyId = req.user?.company_id;
+      const userId = req.user?.id;
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Company ID not found in authentication token'
+        });
       }
+
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          message: 'User ID not found in authentication token'
+        });
+      }
+
+      console.log('📊 Creating opportunity for company:', companyId, 'by user:', userId);
+
+      const opportunityData = {
+        ...req.body,
+        company_id: companyId, // Set from authenticated user
+        user_id: userId, // Set from authenticated user
+        created_by: userId // Track who created the opportunity
+      };
       
       const opportunity = await OpportunitySupabase.create(opportunityData);
       
