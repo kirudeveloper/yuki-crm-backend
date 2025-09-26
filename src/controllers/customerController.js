@@ -88,11 +88,23 @@ class CustomerController {
     }
   }
 
-  // Get all customers
+  // Get all customers (filtered by company)
   async getAllCustomers(req, res) {
     try {
+      // Get company_id from authenticated user
+      const companyId = req.user?.company_id;
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Company ID not found in authentication token'
+        });
+      }
+
+      console.log('🔍 Fetching customers for company:', companyId);
+
       const Customer = this.getCustomerModel();
-      const customers = await Customer.findAll();
+      const customers = await Customer.findByCompanyId(companyId);
 
       res.json({
         success: true,
@@ -110,17 +122,26 @@ class CustomerController {
     }
   }
 
-  // Get customer by ID
+  // Get customer by ID (with company security check)
   async getCustomerById(req, res) {
     try {
       const { id } = req.params;
+      const companyId = req.user?.company_id;
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Company ID not found in authentication token'
+        });
+      }
+
       const Customer = this.getCustomerModel();
-      const customer = await Customer.findById(id);
+      const customer = await Customer.findByIdAndCompany(id, companyId);
 
       if (!customer) {
         return res.status(404).json({
           success: false,
-          message: 'Customer not found'
+          message: 'Customer not found or access denied'
         });
       }
 
@@ -139,7 +160,7 @@ class CustomerController {
     }
   }
 
-  // Update customer
+  // Update customer (with company security check)
   async updateCustomer(req, res) {
     try {
       // Check for validation errors
@@ -153,8 +174,17 @@ class CustomerController {
       }
 
       const { id } = req.params;
+      const companyId = req.user?.company_id;
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Company ID not found in authentication token'
+        });
+      }
+
       const customerData = {
-        company_id: req.body.company_id,
+        company_id: companyId, // Ensure company_id is from authenticated user
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         dateOfBirth: req.body.dateOfBirth,
@@ -174,12 +204,12 @@ class CustomerController {
       };
 
       const Customer = this.getCustomerModel();
-      const result = await Customer.update(id, customerData);
+      const result = await Customer.updateByIdAndCompany(id, companyId, customerData);
 
       if (!result) {
         return res.status(404).json({
           success: false,
-          message: 'Customer not found'
+          message: 'Customer not found or access denied'
         });
       }
 
@@ -208,17 +238,26 @@ class CustomerController {
     }
   }
 
-  // Delete customer
+  // Delete customer (with company security check)
   async deleteCustomer(req, res) {
     try {
       const { id } = req.params;
+      const companyId = req.user?.company_id;
+
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Company ID not found in authentication token'
+        });
+      }
+
       const Customer = this.getCustomerModel();
-      const result = await Customer.delete(id);
+      const result = await Customer.deleteByIdAndCompany(id, companyId);
 
       if (!result) {
         return res.status(404).json({
           success: false,
-          message: 'Customer not found'
+          message: 'Customer not found or access denied'
         });
       }
 
@@ -236,10 +275,18 @@ class CustomerController {
     }
   }
 
-  // Search customers
+  // Search customers (with company security check)
   async searchCustomers(req, res) {
     try {
       const { q } = req.query;
+      const companyId = req.user?.company_id;
+      
+      if (!companyId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Company ID not found in authentication token'
+        });
+      }
       
       if (!q || q.trim() === '') {
         return res.status(400).json({
@@ -249,7 +296,7 @@ class CustomerController {
       }
 
       const Customer = this.getCustomerModel();
-      const customers = await Customer.search(q.trim());
+      const customers = await Customer.searchByCompany(q.trim(), companyId);
 
       res.json({
         success: true,

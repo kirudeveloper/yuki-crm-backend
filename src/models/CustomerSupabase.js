@@ -104,12 +104,51 @@ class CustomerSupabase {
     }
   }
 
+  // New method: Find customers by company ID (for security)
+  static async findByCompanyId(companyId) {
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('company_id', companyId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
+      return (data || []).map(transformToCamelCase);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async findById(id) {
     try {
       const { data, error } = await supabase
         .from('customers')
         .select('*')
         .eq('id', id)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      return transformToCamelCase(data);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // New method: Find customer by ID and company ID (for security)
+  static async findByIdAndCompany(id, companyId) {
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('id', id)
+        .eq('company_id', companyId)
         .single();
 
       if (error) {
@@ -180,6 +219,66 @@ class CustomerSupabase {
     }
   }
 
+  // New method: Update customer by ID and company ID (for security)
+  static async updateByIdAndCompany(id, companyId, customerData) {
+    try {
+      const {
+        company_id,
+        firstName,
+        lastName,
+        dateOfBirth,
+        mobileNumber,
+        email,
+        address,
+        city,
+        state,
+        zipCode,
+        country,
+        company,
+        jobTitle,
+        industry,
+        leadSource,
+        status,
+        notes
+      } = customerData;
+      
+      const { data, error } = await supabase
+        .from('customers')
+        .update({
+          company_id,
+          first_name: firstName,
+          last_name: lastName,
+          date_of_birth: dateOfBirth,
+          mobile_number: mobileNumber,
+          email,
+          address,
+          city,
+          state,
+          zip_code: zipCode,
+          country,
+          company_name: company,
+          job_title: jobTitle,
+          industry,
+          lead_source: leadSource,
+          status,
+          notes,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', id)
+        .eq('company_id', companyId)
+        .select()
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      return transformToCamelCase(data);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async delete(id) {
     try {
       const { error } = await supabase
@@ -197,11 +296,50 @@ class CustomerSupabase {
     }
   }
 
+  // New method: Delete customer by ID and company ID (for security)
+  static async deleteByIdAndCompany(id, companyId) {
+    try {
+      const { error } = await supabase
+        .from('customers')
+        .delete()
+        .eq('id', id)
+        .eq('company_id', companyId);
+
+      if (error) {
+        throw error;
+      }
+
+      return { success: true };
+    } catch (error) {
+      throw error;
+    }
+  }
+
   static async search(searchTerm) {
     try {
       const { data, error } = await supabase
         .from('customers')
         .select('*')
+        .or(`first_name.ilike.%${searchTerm}%,last_name.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,mobile_number.ilike.%${searchTerm}%`)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
+      return (data || []).map(transformToCamelCase);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // New method: Search customers by company ID (for security)
+  static async searchByCompany(searchTerm, companyId) {
+    try {
+      const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .eq('company_id', companyId)
         .or(`first_name.ilike.%${searchTerm}%,last_name.ilike.%${searchTerm}%,email.ilike.%${searchTerm}%,mobile_number.ilike.%${searchTerm}%`)
         .order('created_at', { ascending: false });
 
