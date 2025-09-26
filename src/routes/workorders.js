@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const WorkOrderController = require('../controllers/workOrderController');
+const authMiddleware = require('../middleware/auth');
+
+// All work order routes require authentication
+router.use(authMiddleware);
 
 // Get all work orders
 router.get('/', WorkOrderController.getAllWorkOrders);

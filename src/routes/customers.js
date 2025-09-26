@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const CustomerController = require('../controllers/customerController');
 const { customerCreateValidationRules, customerValidationRules } = require('../middleware/validation');
+const authMiddleware = require('../middleware/auth');
+
+// All customer routes require authentication
+router.use(authMiddleware);
 
 // Create controller instance
 const customerController = new CustomerController();

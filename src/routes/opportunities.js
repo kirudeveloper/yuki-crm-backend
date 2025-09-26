@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const OpportunityController = require('../controllers/opportunityController');
+const authMiddleware = require('../middleware/auth');
+
+// All opportunity routes require authentication
+router.use(authMiddleware);
 
 // Get all opportunities
 router.get('/', OpportunityController.getAllOpportunities);
