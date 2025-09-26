@@ -78,8 +78,7 @@ class OpportunityController {
       const opportunityData = {
         ...req.body,
         company_id: companyId, // Set from authenticated user
-        user_id: userId, // Set from authenticated user
-        created_by: userId // Track who created the opportunity
+        user_id: userId // Set from authenticated user
       };
       
       const opportunity = await OpportunitySupabase.create(opportunityData);
