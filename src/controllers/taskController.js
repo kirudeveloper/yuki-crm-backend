@@ -32,7 +32,6 @@ class TaskController {
         ...req.body,
         companyId: companyId, // Set from authenticated user
         userId: userId, // Set from authenticated user
-        createdBy: userId, // Track who created the task
         ownerId: req.body.ownerId || userId // Use provided owner or default to current user
       };
 
