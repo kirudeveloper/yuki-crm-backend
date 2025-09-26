@@ -3,11 +3,16 @@ const Task = require('../models/Task');
 class TaskController {
   static async createTask(req, res) {
     try {
+      console.log('🔍 TaskController - req.user:', req.user);
+      console.log('🔍 TaskController - req.user?.company_id:', req.user?.company_id);
+      console.log('🔍 TaskController - req.user?.id:', req.user?.id);
+      
       // Get company_id and user_id from authenticated user
       const companyId = req.user?.company_id;
       const userId = req.user?.id;
 
       if (!companyId) {
+        console.log('❌ TaskController - No company_id found in req.user');
         return res.status(400).json({
           success: false,
           message: 'Company ID not found in authentication token'

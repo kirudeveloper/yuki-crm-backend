@@ -5,6 +5,9 @@ const authMiddleware = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.replace('Bearer ', '');
     
+    console.log('🔍 Auth middleware - Token received:', token ? 'Yes' : 'No');
+    console.log('🔍 Auth middleware - Token preview:', token ? token.substring(0, 50) + '...' : 'None');
+    
     if (!token) {
       return res.status(401).json({
         success: false,
@@ -27,6 +30,7 @@ const authMiddleware = async (req, res, next) => {
         is_active: true
       };
       
+      console.log('🔍 Setting req.user to:', demoUser);
       req.user = demoUser;
       next();
       return;
