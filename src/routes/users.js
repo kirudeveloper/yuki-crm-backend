@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/userController');
+const authMiddleware = require('../middleware/auth');
+
+// All user routes require authentication
+router.use(authMiddleware);
 
 // Get all users for the current company
 router.get('/', UserController.getAllUsers);
