@@ -75,8 +75,18 @@ class OpportunityController {
 
       console.log('📊 Creating opportunity for company:', companyId, 'by user:', userId);
 
+      // Transform camelCase to snake_case for database
       const opportunityData = {
-        ...req.body,
+        customer_id: req.body.customerId,
+        title: req.body.title,
+        description: req.body.description,
+        stage: req.body.stage,
+        value: req.body.value,
+        currency: req.body.currency,
+        probability: req.body.probability,
+        expected_close_date: req.body.expectedCloseDate,
+        source: req.body.source,
+        notes: req.body.notes,
         company_id: companyId, // Set from authenticated user
         user_id: userId // Set from authenticated user
       };

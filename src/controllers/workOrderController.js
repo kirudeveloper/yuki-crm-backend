@@ -75,8 +75,22 @@ class WorkOrderController {
 
       console.log('🔧 Creating work order for company:', companyId, 'by user:', userId);
 
+      // Transform camelCase to snake_case for database
       const workOrderData = {
-        ...req.body,
+        customer_id: req.body.customerId,
+        opportunity_id: req.body.opportunityId,
+        title: req.body.title,
+        description: req.body.description,
+        work_type: req.body.workType,
+        priority: req.body.priority,
+        status: req.body.status,
+        start_date: req.body.startDate,
+        due_date: req.body.dueDate,
+        estimated_hours: req.body.estimatedHours,
+        actual_hours: req.body.actualHours,
+        hourly_rate: req.body.hourlyRate,
+        total_cost: req.body.totalCost,
+        notes: req.body.notes,
         company_id: companyId, // Set from authenticated user
         user_id: userId // Set from authenticated user
       };
