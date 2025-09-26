@@ -6,7 +6,7 @@ const transformToCamelCase = (data) => {
   
   return {
     id: data.id,
-    company_id: data.company_id,
+    companyId: data.company_id,
     firstName: data.first_name,
     lastName: data.last_name,
     dateOfBirth: data.date_of_birth,
@@ -17,6 +17,11 @@ const transformToCamelCase = (data) => {
     state: data.state,
     zipCode: data.zip_code,
     country: data.country,
+    company: data.company_name,
+    jobTitle: data.job_title,
+    industry: data.industry,
+    leadSource: data.lead_source,
+    status: data.status,
     notes: data.notes,
     createdAt: data.created_at,
     updatedAt: data.updated_at
@@ -28,8 +33,6 @@ class CustomerSupabase {
     try {
       const {
         company_id,
-        user_id,
-        created_by,
         firstName,
         lastName,
         dateOfBirth,
@@ -40,6 +43,11 @@ class CustomerSupabase {
         state,
         zipCode,
         country,
+        company,
+        jobTitle,
+        industry,
+        leadSource,
+        status,
         notes
       } = customerData;
       
@@ -48,8 +56,6 @@ class CustomerSupabase {
         .insert([
           {
             company_id,
-            user_id,
-            created_by,
             first_name: firstName,
             last_name: lastName,
             date_of_birth: dateOfBirth,
@@ -60,6 +66,11 @@ class CustomerSupabase {
             state,
             zip_code: zipCode,
             country,
+            company_name: company,
+            job_title: jobTitle,
+            industry,
+            lead_source: leadSource,
+            status,
             notes
           }
         ])
@@ -114,6 +125,7 @@ class CustomerSupabase {
   static async update(id, customerData) {
     try {
       const {
+        company_id,
         firstName,
         lastName,
         dateOfBirth,
@@ -124,12 +136,18 @@ class CustomerSupabase {
         state,
         zipCode,
         country,
+        company,
+        jobTitle,
+        industry,
+        leadSource,
+        status,
         notes
       } = customerData;
       
       const { data, error } = await supabase
         .from('customers')
         .update({
+          company_id,
           first_name: firstName,
           last_name: lastName,
           date_of_birth: dateOfBirth,
@@ -140,6 +158,11 @@ class CustomerSupabase {
           state,
           zip_code: zipCode,
           country,
+          company_name: company,
+          job_title: jobTitle,
+          industry,
+          lead_source: leadSource,
+          status,
           notes,
           updated_at: new Date().toISOString()
         })

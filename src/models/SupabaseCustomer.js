@@ -31,6 +31,7 @@ class PostgreSQLCustomer {
   // Create a new customer
   static async create(customerData) {
     const {
+      company_id,
       firstName,
       lastName,
       dateOfBirth,
@@ -41,18 +42,25 @@ class PostgreSQLCustomer {
       state,
       zipCode,
       country,
+      company,
+      jobTitle,
+      industry,
+      leadSource,
+      status,
       notes
     } = customerData;
 
     const query = `
       INSERT INTO customers (
-        first_name, last_name, date_of_birth, mobile_number, email,
-        address, city, state, zip_code, country, notes
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+        company_id, first_name, last_name, date_of_birth, mobile_number, email,
+        address, city, state, zip_code, country, company_name, job_title,
+        industry, lead_source, status, notes
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
       RETURNING *
     `;
 
     const values = [
+      company_id,
       firstName,
       lastName,
       dateOfBirth || null,
@@ -63,6 +71,11 @@ class PostgreSQLCustomer {
       state || null,
       zipCode || null,
       country || 'USA',
+      company || null,
+      jobTitle || null,
+      industry || null,
+      leadSource || null,
+      status || 'active',
       notes || null
     ];
 
@@ -113,6 +126,7 @@ class PostgreSQLCustomer {
   // Update customer
   static async update(id, customerData) {
     const {
+      company_id,
       firstName,
       lastName,
       dateOfBirth,
@@ -123,19 +137,26 @@ class PostgreSQLCustomer {
       state,
       zipCode,
       country,
+      company,
+      jobTitle,
+      industry,
+      leadSource,
+      status,
       notes
     } = customerData;
 
     const query = `
       UPDATE customers SET
-        first_name = $1, last_name = $2, date_of_birth = $3, mobile_number = $4,
-        email = $5, address = $6, city = $7, state = $8, zip_code = $9,
-        country = $10, notes = $11, updated_at = CURRENT_TIMESTAMP
-      WHERE id = $12
+        company_id = $1, first_name = $2, last_name = $3, date_of_birth = $4, mobile_number = $5,
+        email = $6, address = $7, city = $8, state = $9, zip_code = $10,
+        country = $11, company_name = $12, job_title = $13, industry = $14,
+        lead_source = $15, status = $16, notes = $17, updated_at = CURRENT_TIMESTAMP
+      WHERE id = $18
       RETURNING *
     `;
 
     const values = [
+      company_id,
       firstName,
       lastName,
       dateOfBirth || null,
@@ -146,6 +167,11 @@ class PostgreSQLCustomer {
       state || null,
       zipCode || null,
       country || 'USA',
+      company || null,
+      jobTitle || null,
+      industry || null,
+      leadSource || null,
+      status || 'active',
       notes || null,
       id
     ];
@@ -184,6 +210,7 @@ class PostgreSQLCustomer {
   static formatCustomer(dbCustomer) {
     return {
       id: dbCustomer.id,
+      companyId: dbCustomer.company_id,
       firstName: dbCustomer.first_name,
       lastName: dbCustomer.last_name,
       dateOfBirth: dbCustomer.date_of_birth,
@@ -194,6 +221,11 @@ class PostgreSQLCustomer {
       state: dbCustomer.state,
       zipCode: dbCustomer.zip_code,
       country: dbCustomer.country,
+      company: dbCustomer.company_name,
+      jobTitle: dbCustomer.job_title,
+      industry: dbCustomer.industry,
+      leadSource: dbCustomer.lead_source,
+      status: dbCustomer.status,
       notes: dbCustomer.notes,
       createdAt: dbCustomer.created_at,
       updatedAt: dbCustomer.updated_at

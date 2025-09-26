@@ -42,8 +42,6 @@ class CustomerController {
 
       const customerData = {
         company_id: companyId, // Set from authenticated user
-        user_id: userId, // Set from authenticated user
-        created_by: userId, // Track who created the customer
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         dateOfBirth: req.body.dateOfBirth,
@@ -54,6 +52,11 @@ class CustomerController {
         state: req.body.state,
         zipCode: req.body.zipCode,
         country: req.body.country,
+        company: req.body.company,
+        jobTitle: req.body.jobTitle,
+        industry: req.body.industry,
+        leadSource: req.body.leadSource,
+        status: req.body.status,
         notes: req.body.notes
       };
 
@@ -162,6 +165,11 @@ class CustomerController {
         state: req.body.state,
         zipCode: req.body.zipCode,
         country: req.body.country,
+        company: req.body.company,
+        jobTitle: req.body.jobTitle,
+        industry: req.body.industry,
+        leadSource: req.body.leadSource,
+        status: req.body.status,
         notes: req.body.notes
       };
 
