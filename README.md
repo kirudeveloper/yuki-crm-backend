@@ -71,3 +71,4 @@ The backend connects to Supabase with the following main tables:
 ✅ **Connected to Supabase Database**
 ✅ **API Endpoints Tested**
 ✅ **Mobile App Integration Ready**
+

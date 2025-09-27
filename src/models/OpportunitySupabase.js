@@ -121,3 +121,4 @@ class OpportunitySupabase {
 }
 
 module.exports = OpportunitySupabase;
+

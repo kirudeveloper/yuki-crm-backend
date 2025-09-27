@@ -66,3 +66,4 @@ CREATE POLICY "Allow all operations on customers" ON customers FOR ALL USING (tr
 
 
 
+

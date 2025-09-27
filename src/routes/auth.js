@@ -13,3 +13,4 @@ router.get('/verify-token', AuthController.verifyToken);
 router.get('/profile', authMiddleware, AuthController.getProfile);
 
 module.exports = router;
+

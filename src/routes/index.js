@@ -8,6 +8,8 @@ const taskRoutes = require('./taskRoutes');
 const opportunityRoutes = require('./opportunities');
 const workOrderRoutes = require('./workorders');
 const userRoutes = require('./users');
+const caseRoutes = require('./cases');
+const eventRoutes = require('./events');
 // const companyRoutes = require('./companyRoutes'); // TODO: Create company routes
 
 // Mount routes
@@ -17,6 +19,8 @@ router.use('/tasks', taskRoutes);
 router.use('/opportunities', opportunityRoutes);
 router.use('/workorders', workOrderRoutes);
 router.use('/users', userRoutes);
+router.use('/cases', caseRoutes);
+router.use('/events', eventRoutes);
 // router.use('/companies', companyRoutes); // TODO: Enable when company routes are created
 
 // Health check endpoint
@@ -42,7 +46,9 @@ router.get('/', (req, res) => {
       tasks: '/api/tasks',
       opportunities: '/api/opportunities',
       workorders: '/api/workorders',
-      users: '/api/users'
+      users: '/api/users',
+      cases: '/api/cases',
+      events: '/api/events'
       // companies: '/api/companies' // TODO: Enable when company routes are created
     }
   });
